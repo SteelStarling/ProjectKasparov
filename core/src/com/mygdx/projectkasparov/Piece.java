@@ -1,26 +1,63 @@
 package com.mygdx.projectkasparov;
 
-public abstract class Piece {
+public class Piece {
 
     public enum PieceColor {
-        BLACK, WHITE
+        BLACK(false), WHITE(true);
+
+        private boolean isWhite;
+
+        PieceColor(boolean isWhite){
+            this.isWhite = isWhite;
+        }
+
+        boolean getColor(){
+            return this.isWhite;
+        }
     }
 
     public enum PieceType {
-        KING, QUEEN, ROOK, BISHOP, KNIGHT, PAWN
+        KING("King", "K"), QUEEN("Queen", "Q"), ROOK("Rook", "R"),
+        BISHOP("Bishop", "B"), KNIGHT("Knight", "N"), PAWN("Pawn", "");
+
+        private String name; //name
+        private String abbr; //abbreviated name
+
+        PieceType(String name, String abbr){
+            this.name = name;
+            this.abbr = abbr;
+        }
+
+        String getName(){
+            return this.name;
+        }
+
+        String getAbbr(){
+            return this.abbr;
+        }
     }
 
     public enum PieceState {
-        ACTIVE, CAPTURED
+        UNMOVED(0), MOVED(1), CAPTURED(2);
+
+        private int val; //value
+
+        PieceState(int num){
+            this.val = num;
+        }
+
+        int getNum(){
+            return this.val;
+        }
     }
 
-    private PieceColor color;
+    private final PieceColor color;
     private PieceType type;
     private PieceState state;
     private int xLoc; //location on board x axis
     private int yLoc; //location on board y axis
 
-    public Piece(PieceColor color, PieceType type, PieceState state, int x, int y){
+    public Piece(PieceType type, PieceState state, PieceColor color, int x, int y){
         this.color = color;
         this.type = type;
         this.state = state;
@@ -37,8 +74,21 @@ public abstract class Piece {
         return this.type;
     }
 
+    public void setType(PieceType newType){
+        this.type = newType;
+    }
+
     public PieceState getState(){
         return this.state;
+    }
+
+    public void setState(PieceState newState){
+        this.state = newState;
+    }
+
+    public void setLocation(int x, int y){
+        this.xLoc = x;
+        this.yLoc = y;
     }
 
     public int[] getLocation(){
