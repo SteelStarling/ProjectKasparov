@@ -26,11 +26,13 @@ public final class Location {
         if(x < 0 || x >= Constants.BoardSize){
             return false; //return false if out of bounds
         }
-        if(x < 0 || x >= Constants.BoardSize){
+        if(y < 0 || y >= Constants.BoardSize){
             return false; //return false if out of bounds
         }
+
         this.xPos = x; //save new x and y
         this.yPos = y;
+
         return true; //return true if in bounds
     }
 
@@ -61,5 +63,24 @@ public final class Location {
      */
     public int getYPos(){
         return this.yPos;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(this.getClass() != obj.getClass()){ //check class match
+            return false;
+        }
+
+        Location otherLoc = (Location)obj; //turn object into Location
+
+        if(this.getXPos() == otherLoc.getXPos()){ //check x positions match
+            return false;
+        }
+
+        if(this.getYPos() == otherLoc.getYPos()){ //check y positions match
+            return false;
+        }
+
+        return true; //if both x and y match, return true
     }
 }

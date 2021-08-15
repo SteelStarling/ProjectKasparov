@@ -3,14 +3,15 @@ package com.mygdx.projectkasparov;
 public abstract class Piece {
 
     private boolean isWhite = false;
-    private int xLoc; //location on board x axis
-    private int yLoc; //location on board y axis
+    private boolean hasMoved = false;
+    private String pieceType
+    private Location loc;
 
-    public Piece(boolean isWhite, int x, int y){
+    public Piece(String type, boolean isWhite, int x, int y){
         this.isWhite = isWhite;
+        this.pieceType = type;
 
-        this.xLoc = x;
-        this.yLoc = y;
+        loc = new Location(x,y); //create new location to hold data
     }
 
     public boolean getIsWhite(){
@@ -21,32 +22,49 @@ public abstract class Piece {
         this.isWhite = isWhite;
     }
 
-    public void setXLoc(int x){
-        this.xLoc = x;
+    public Location getLoc() {
+        return this.loc;
     }
 
     public int getXLoc(){
-        return this.xLoc;
-    }
-
-    public void setYLoc(int y){
-        this.yLoc = y;
+        return this.loc.getXPos();
     }
 
     public int getYLoc(){
-        return this.yLoc;
+        return this.loc.getYPos();
     }
 
-    public void setLocation(int x, int y){
-        this.xLoc = x;
-        this.yLoc = y;
+    public abstract boolean isValidMove(int x, int y)
+
+    public boolean setLocation(int x, int y){
+        int xPos = this.getXLoc(); //get starting positions
+        int yPos = this.getYLoc();
+        if((x == xPos) && (y == yPos)){ //if positions are unchanged, return false and do nothing (if no move, don't move)
+            return false;
+        }
+
+        boolean worked = this.loc.setNewLoc(x,y); //set new location, save if worked
+
+        if(worked){ //if move works, set moved to true
+            this.hasMoved = true;
+        }
+
+        return worked; //return if worked
     }
 
-    public int[] getLocation(){
-        int[] loc = new int[2];
-        loc[0] = this.xLoc;
-        loc[1] = this.yLoc;
+    public boolean setRelativeLocation(int relX, int relY){
 
-        return loc;
+        if((relX == 0) && (relY == 0)){ //if positions are unchanged, return false and do nothing (if no move, don't move)
+            return false;
+        }
+
+        boolean worked = this.loc.setNewRelativeLoc(relX,relY); //set new relative location, save if worked
+
+        if(worked){ //if move works, set moved to true
+            this.hasMoved = true;
+        }
+
+        return worked; //return if worked
     }
+
 }
